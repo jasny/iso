@@ -1,0 +1,11 @@
+{
+    "name": "jasny/iso",
+    "autoload": {
+        "psr-0": {
+            "Social": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.4.0"
+    }
+}
