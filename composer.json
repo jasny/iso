@@ -2,7 +2,7 @@
     "name": "jasny/iso",
     "autoload": {
         "psr-0": {
-            "Social": "src/"
+            "Jasny\\ISO": "src/"
         }
     },
     "require": {
