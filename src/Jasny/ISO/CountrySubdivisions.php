@@ -5508,6 +5508,13 @@ class CountrySubdivisions
         ]
     ];
 
+    /**
+     * Countries where the subdivision is required in the mailing address
+     * 
+     * @var array
+     */
+    protected static $requiredFor = ['AU', 'CA', 'CN', 'ME', 'MY', 'US'];
+    
     
     /**
      * Get country code
@@ -5518,7 +5525,7 @@ class CountrySubdivisions
     protected static function countryCode($country)
     {
         $country = (string)$country;
-        if (strlen($country) != 2) $country = CountryCodes::getCode($country);
+        if (strlen($country) != 2) $country = Countries::getCode($country);
         
         return $country;
     }
@@ -5543,7 +5550,7 @@ class CountrySubdivisions
      */
     public static function getName($country, $code)
     {
-        return array_search($code, static::$list[static::countryCode($country)]);
+        return array_search($code, static::$list[static::countryCode($country)]) ?: null;
     }
     
     /**
@@ -5555,6 +5562,18 @@ class CountrySubdivisions
      */
     public static function getCode($country, $code)
     {
-        return static::$list[static::countryCode($country)][$code];
+        $country = static::countryCode($country);
+        return isset(static::$list[$country][$code]) ? static::$list[$country][$code] : null;
+    }
+    
+    /**
+     * Check if subdivisons are required in the mailing address
+     * 
+     * @param string $country  Country name or code
+     * @reutrn boolean
+     */
+    public static function areRequiredFor($country)
+    {
+        return array_search(static::$requiredFor, static::countryCode($country)) !== false;
     }
 }

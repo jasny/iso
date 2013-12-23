@@ -314,6 +314,20 @@ class Countries
     
     
     /**
+     * Get country code
+     * 
+     * @param string $country
+     * @return string
+     */
+    protected static function countryCode($country)
+    {
+        $country = (string)$country;
+        if (strlen($country) != 2) $country = static::getCode($country);
+        
+        return $country;
+    }
+    
+    /**
      * Get list of countries
      * 
      * @return array
@@ -326,12 +340,12 @@ class Countries
     /**
      * Get country name by code
      * 
-     * @param string $code
+     * @param string $code  Country code or name
      * @return string
      */
     public static function getName($code)
     {
-        return array_search($code, static::$list);
+        return array_search(static::countryCode($code), static::$list) ?: null;
     }
     
     /**
@@ -342,6 +356,6 @@ class Countries
      */
     public static function getCode($code)
     {
-        return static::$list[$code];
+        return isset(static::$list[$code]) ? static::$list[$code] : null;
     }
 }
