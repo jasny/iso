@@ -5567,6 +5567,21 @@ class CountrySubdivisions
     }
     
     /**
+     * Get all the required subdivisions per country
+     * 
+     * @return array
+     */
+    public static function getRequired()
+    {
+        $subdivisions = [];
+        foreach (static::$requiredFor as $country) {
+            $subdivisions[$country] = static::$list[$country];
+        }
+        
+        return $subdivisions;
+    }
+    
+    /**
      * Check if subdivisons are required in the mailing address
      * 
      * @param string $country  Country name or code
@@ -5574,6 +5589,6 @@ class CountrySubdivisions
      */
     public static function areRequiredFor($country)
     {
-        return array_search(static::$requiredFor, static::countryCode($country)) !== false;
+        return array_search(static::countryCode($country), static::$requiredFor) !== false;
     }
 }
