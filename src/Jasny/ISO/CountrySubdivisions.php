@@ -5575,7 +5575,7 @@ class CountrySubdivisions
     {
         $subdivisions = [];
         foreach (static::$requiredFor as $country) {
-            $subdivisions[$country] = static::$list[$country];
+            $subdivisions[$country] = self::getList($country);
         }
         
         return $subdivisions;
