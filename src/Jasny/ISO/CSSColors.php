@@ -160,159 +160,83 @@ class Colors
     /**
      * Get hexidecimal code for color
      *
-     * for RGB - @var array with length equals 3
-     * for Name -@var string
-     * for Hex - @var string starts with # and length equals 4 or 7
-     * otherwise returns false
-     * @returns string or false
+     * @param  string|array $color
+     * @return string
      */
     public static function getHex($color)
     {
         if (is_array($color)) {
 
-            if (count($color) == 3) {
+            if (count($color) !== 3) return null;
+
+            $hex = '#';
+            $hex .= str_pad(dechex($color[0]), 2, "0", STR_PAD_LEFT);
+            $hex .= str_pad(dechex($color[1]), 2, "0", STR_PAD_LEFT);
+            $hex .= str_pad(dechex($color[2]), 2, "0", STR_PAD_LEFT);
+            return $hex;
+
+        }
+        $color = (string)($color);
+
+        if ($color[0] === '#') {
+
+            if (strlen($color) === 4) {
                 $hex = '#';
-                $hex .= str_pad(dechex($color[0]), 2, "0", STR_PAD_LEFT);
-                $hex .= str_pad(dechex($color[1]), 2, "0", STR_PAD_LEFT);
-                $hex .= str_pad(dechex($color[2]), 2, "0", STR_PAD_LEFT);
-                return $hex;
+                $hex .= substr($color, 1, 1) . substr($color, 1, 1);
+                $hex .= substr($color, 2, 1) . substr($color, 2, 1);
+                $hex .= substr($color, 3, 1) . substr($color, 3, 1);
+                return strtolower($hex);
 
-            } else return false;
+            } elseif (strlen($color) === 7) {
+                return strtolower($color);
 
-        } elseif (is_string($color)) {
-
-            if(substr($color, 0, 1) == '#' && (strlen($color) == 4 || strlen($color) == 7)) {
-                return $color;
+            } else {
+                return null;
             }
 
-            else {
-                $hex = false;
+        } else {
+            return isset(static::$names[$color]) ? static::$names[$color] : null;
+        }
 
-                foreach (static::$names as $colorFromNames => $hexFromNames) {
-                    if ($color == $colorFromNames) {
-                        $hex = $hexFromNames;
-                    }
-                }
-
-                return $hex;
-            }
-        } else return false;
     }
 
     /**
      * Get rgb code for color
      *
-     * for RGB - @var array with length equals 3
-     * for Name -@var string
-     * for Hex - @var string starts with # and length equals 4 or 7
-     * otherwise returns false
-     * @returns array or false
+     * @param  string | array $color
+     * @return string
      */
     public static function  getRgb($color)
     {
-        if (is_string($color)) {
+        if (is_array($color) && count($color) === 3) return $color;
 
-            if (substr($color, 0, 1) == '#') {
-                $color = str_replace("#", "", $color);
+        $hex = static::getHex($color);
+        if (!isset($hex)) return null;
 
-                if (strlen($color) == 3) {
-                    $r = hexdec(substr($color, 0, 1) . substr($color, 0, 1));
-                    $g = hexdec(substr($color, 1, 1) . substr($color, 1, 1));
-                    $b = hexdec(substr($color, 2, 1) . substr($color, 2, 1));
-                    return [$r, $g, $b];
+        $r = hexdec(substr($hex, 1, 2));
+        $g = hexdec(substr($hex, 3, 2));
+        $b = hexdec(substr($hex, 5, 2));
 
-                } elseif (strlen($color) == 6) {
-                    $r = hexdec(substr($color, 0, 2));
-                    $g = hexdec(substr($color, 2, 2));
-                    $b = hexdec(substr($color, 4, 2));
-                    return [$r, $g, $b];
-
-                } else return false;
-
-            } else {
-                $rgb = false;
-
-                foreach (static::$names as $colorFromNames => $hexFromNames) {
-                    if ($color == $colorFromNames) {
-                        $color = str_replace("#", "", $hexFromNames);
-                        $r = hexdec(substr($color, 0, 2));
-                        $g = hexdec(substr($color, 2, 2));
-                        $b = hexdec(substr($color, 4, 2));
-                        $rgb = [$r, $g, $b];
-                    }
-                }
-
-                return $rgb;
-            }
-
-        }
-        elseif(is_array($color) && count($color) == 3){
-
-            return $color;
-
-        }else return false;
+        return [$r, $g, $b];
     }
 
     /**
      * Get name for color
      *
-     * for RGB - @var array with length equals 3
-     * for Name -@var string
-     * for Hex - @var string starts with # and length equals 4 or 7
-     * otherwise returns false
-     * @returns string or false
+     * @param  string | array $color
+     * @return string
      */
 
     public static function getName($color)
     {
-        if (is_array($color)) {
-
-            if (count($color) == 3) {
-                $color = static::getHex($color);
-
-                foreach (static::$names as $colorFromNames => $hexFromNames) {
-                    if ($color == $hexFromNames) {
-                        $color = $colorFromNames;
-                    }
-                }
-
-                return $color;
-
-            } else return $color;
-
-        } elseif (is_string($color) && substr($color, 0, 1) == '#') {
-
-            if (strlen($color) == 4) {
-                $hex = '#';
-                $hex .= substr($color, 1, 1) . substr($color, 1, 1);
-                $hex .= substr($color, 2, 1) . substr($color, 2, 1);
-                $hex .= substr($color, 3, 1) . substr($color, 3, 1);
-
-                foreach (static::$names as $colorFromNames => $hexFromNames) {
-                    if ($hex == $hexFromNames) {
-                        $hex = $colorFromNames;
-                    }
-                }
-
-                return $hex;
-
-            } elseif (strlen($color) == 7) {
-
-                foreach (static::$names as $colorFromNames => $hexFromNames) {
-                    if ($color == $hexFromNames) {
-                        $color = $colorFromNames;
-                    }
-                }
-
-                return $color;
-
-            } else return false;
-
+        if(!is_array($color)) {
+            $color = (string)strtolower($color);
+            if($color[0] !== '#') return isset(static::$names[$color]) ? $color : null;
         }
-        elseif(is_string($color)){
 
-            return $color;
+        $hex = static::getHex($color);
 
-        }else return false;
+        return array_search($hex, static::$names) ?: $hex;
+
     }
 }
