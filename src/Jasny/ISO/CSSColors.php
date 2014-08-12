@@ -203,7 +203,7 @@ class Colors
     /**
      * Get rgb code for color
      *
-     * @param  string | array $color
+     * @param  string|array $color
      * @return string
      */
     public static function  getRgb($color)
@@ -223,7 +223,7 @@ class Colors
     /**
      * Get name for color
      *
-     * @param  string | array $color
+     * @param  string|array $color
      * @return string
      */
 
