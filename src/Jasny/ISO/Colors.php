@@ -1,6 +1,19 @@
 <?php
+/**
+ * Jasny ISO
+ * 
+ * @license http://www.jasny.net/mit MIT
+ * @copyright 2014 Arnold Daniels
+ */
 
+/** */
 namespace Jasny\ISO;
+
+/**
+ * CSS Color Module Level 4
+ *
+ * This class allows conversion between the different syntaxes for colors, including color names.
+ */
 class Colors
 {
     /**
