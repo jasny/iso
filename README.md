@@ -39,10 +39,28 @@ name by code.
 
 Searching on an alternative subdivision name is supported.
 
-You can also check if a subdivision is required for a full address for a country. This is the case for Austrila, Canada, China, Montenegro, Malaysia and the United States.
+You can also check if a subdivision is required for a full address for a country. This is the case for
+Austrila, Canada, China, Montenegro, Malaysia and the United States.
 
 
     Jasny\ISO\CountrySubdivisions::getRequired(); // ['AU', 'CA', 'CN', 'ME', 'MY', 'US']
     Jasny\ISO\CountrySubdivisions::isRequired("US"); // true
     Jasny\ISO\CountrySubdivisions::isRequired("NL"); // false
     
+
+CSS Color Module Level 4
+------------------------
+
+### Colors
+
+The `Colors` class allows conversion between the different syntaxes for colors, including color names.
+The color syntax is devined by W3C standard [CSS Color Module Level 4](http://dev.w3.org/csswg/css-color/).
+
+    Jasny\ISO\Colors::toHex('blue'); // '#0000ff'
+    Jasny\ISO\Colors::toHex([0, 0, 255]); // '#0000ff'
+    Jasny\ISO\Colors::getRgb('blue'); // [0, 0, 255]
+    Jasny\ISO\Colors::getRgb('#0000ff'); // [0, 0, 255]
+    Jasny\ISO\Colors::getName('#0000ff'); // 'blue'
+    Jasny\ISO\Colors::getName([0, 0, 255]); // 'blue'
+
+_Conversion from and to HSL is currently not supported_
