@@ -56,8 +56,8 @@ CSS Color Module Level 4
 The `Colors` class allows conversion between the different syntaxes for colors, including color names.
 The color syntax is devined by W3C standard [CSS Color Module Level 4](http://dev.w3.org/csswg/css-color/).
 
-    Jasny\ISO\Colors::toHex('blue'); // '#0000ff'
-    Jasny\ISO\Colors::toHex([0, 0, 255]); // '#0000ff'
+    Jasny\ISO\Colors::getHex('blue'); // '#0000ff'
+    Jasny\ISO\Colors::getHex([0, 0, 255]); // '#0000ff'
     Jasny\ISO\Colors::getRgb('blue'); // [0, 0, 255]
     Jasny\ISO\Colors::getRgb('#0000ff'); // [0, 0, 255]
     Jasny\ISO\Colors::getName('#0000ff'); // 'blue'
