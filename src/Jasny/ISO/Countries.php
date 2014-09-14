@@ -2,7 +2,7 @@
 /**
  * Jasny Social
  * World's best PHP library for webservice APIs
- * 
+ *
  * @license http://www.jasny.net/mit MIT
  * @copyright 2012 Jasny
  */
@@ -12,7 +12,7 @@ namespace Jasny\ISO;
 
 /**
  * ISO 3166-1
- * 
+ *
  * ISO 3166 is the International Standard for country codes and codes for their subdivisions. The purpose of ISO 3166 is
  *  to establish internationally recognised codes for the representation of names of countries, territories or areas of
  *  geographical interest, and their subdivisions.
@@ -21,7 +21,7 @@ class Countries
 {
     /**
      * List of country codes by name
-     * 
+     *
      * @var array
      */
     protected static $list = [
@@ -38,6 +38,7 @@ class Countries
         "Argentina" => 'AR',
         "Armenia" => 'AM',
         "Aruba" => 'AW',
+        "Ascension Island" => "AC",
         "Australia" => 'AU',
         "Austria" => 'AT',
         "Azerbaijan" => 'AZ',
@@ -89,7 +90,7 @@ class Countries
         "Cte D'ivoire" => 'CI',
         "Croatia" => 'HR',
         "Cuba" => 'CU',
-        "Curaao" => 'CW',
+        "Curaçao" => 'CW',
         "Cyprus" => 'CY',
         "Czech Republic" => 'CZ',
         "Denmark" => 'DK',
@@ -103,6 +104,7 @@ class Countries
         "Eritrea" => 'ER',
         "Estonia" => 'EE',
         "Ethiopia" => 'ET',
+        "European Union" => "EU",
         "Falkland Islands (malvinas)" => 'FK',
         "Faroe Islands" => 'FO',
         "Fiji" => 'FJ',
@@ -160,6 +162,7 @@ class Countries
         "Korea, Republic of" => 'KR',
         "Republic of Korea" => 'KR',
         "South Korea" => 'KR',
+        "Kosovo" => "KV",
         "Kuwait" => 'KW',
         "Kyrgyzstan" => 'KG',
         "Lao People's Democratic Republic" => 'LA',
@@ -205,6 +208,7 @@ class Countries
         "Nepal" => 'NP',
         "The Netherlands" => 'NL',
         "Netherlands" => 'NL',
+        "Netherlands Antilles" => 'AN',
         "New Caledonia" => 'NC',
         "New Zealand" => 'NZ',
         "Nicaragua" => 'NI',
@@ -234,7 +238,7 @@ class Countries
         "Romania" => 'RO',
         "Russian Federation" => 'RU',
         "Rwanda" => 'RW',
-        "Saint Barthlemy" => 'BL',
+        "Saint Barthelemy" => 'BL',
         "Saint Helena, Ascension and Tristan Da Cunha" => 'SH',
         "Saint Kitts and Nevis" => 'KN',
         "Saint Lucia" => 'LC',
@@ -274,6 +278,7 @@ class Countries
         "Tanzania" => 'TZ',
         "Tanzania, United Republic of" => 'TZ',
         "Thailand" => 'TH',
+        "Territorial collectivity of Saint Barthélemy" => "BL",
         "Timor-leste" => 'TL',
         "Togo" => 'TG',
         "Tokelau" => 'TK',
@@ -312,11 +317,11 @@ class Countries
         "Zambia" => 'ZM',
         "Zimbabwe" => 'ZW',
     ];
-    
-    
+
+
     /**
      * Get country code
-     * 
+     *
      * @param string $country
      * @return string
      */
@@ -324,34 +329,34 @@ class Countries
     {
         $country = (string)$country;
         if (strlen($country) != 2) $country = static::getCode($country);
-        
+
         return $country;
     }
-    
+
     /**
      * Get list of countries
-     * 
+     *
      * @return array
      */
     public static function getList()
     {
         return array_flip(array_unique(static::$list));
     }
-    
+
     /**
      * Get country name by code
-     * 
-     * @param string $code  Country code or name
+     *
+     * @param string $code Country code or name
      * @return string
      */
     public static function getName($code)
     {
-        return array_search(static::countryCode($code), static::$list) ?: null;
+        return array_search(static::countryCode($code), static::$list) ? : null;
     }
-    
+
     /**
      * Get country code by name
-     * 
+     *
      * @param string $code
      * @return string
      */
