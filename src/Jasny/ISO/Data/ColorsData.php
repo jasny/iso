@@ -1,7 +1,7 @@
 <?php
 
-namespace Jasny\ISO;
-class Colors
+namespace Jasny\ISO\Data;
+class ColorsData
 {
     /**
      * Named colors
@@ -177,6 +177,7 @@ class Colors
 
         }
         $color = (string)($color);
+        if(strlen($color) === 0) return null;
 
         if ($color[0] === '#') {
 
@@ -231,6 +232,7 @@ class Colors
     {
         if(!is_array($color)) {
             $color = (string)strtolower($color);
+            if(strlen($color) === 0) return null;
             if($color[0] !== '#') return isset(static::$names[$color]) ? $color : null;
         }
 
