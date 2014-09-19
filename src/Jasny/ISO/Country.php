@@ -24,6 +24,7 @@ class Country extends En
     function __construct($country, $param = false)
     {
         $this->country = (string)$country;
+        $this->param = $param;
         if ($param == "code") $this->country = (strlen($country) == 2) ? $country : null;
         if ($param == "name") $this->country = isset(static::$list[$country]) ? $country : null;
     }
@@ -37,7 +38,7 @@ class Country extends En
     public static function fromName($country)
     {
         $country = (string)$country;
-        return isset(static::$list[$country]) ? new Country($country) : new Country(null);
+        return isset(static::$list[$country]) ? new Country($country, "name") : new Country(null);
     }
 
     /**
@@ -49,7 +50,7 @@ class Country extends En
     public static function fromCode($country)
     {
         $country = (string)$country;
-        return (strlen($country) == 2) ? new Country($country) : new Country(null);
+        return (strlen($country) == 2) ? new Country($country, "code") : new Country(null);
     }
 
     /**
