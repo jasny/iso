@@ -1,10 +1,14 @@
 <?php
 
 
-namespace Jasny\ISO\Data;
+namespace Jasny\ISO;
 
 class Mime
 {
+    function __construct($mime){
+        $this->mime = (string)$mime;
+    }
+
 
     /**
      * List of mime types by extensions name
@@ -473,27 +477,26 @@ class Mime
     /**
      * Get extension by mime
      *
-     * @param string $inputMime mime
      * @return string
      */
-    public static function getExtension($inputMime)
+    final public function toExtension()
     {
         foreach (static::$list as $ext => $arrayMime) {
 
-            if (in_array($inputMime, $arrayMime)) return $ext;
+            if (in_array($this->mime, $arrayMime)) return $ext;
 
         }
         return null;
     }
 
     /**
-     * Get mime by extension
+     * Create mime type
      *
-     * @param string $ext extension
-     * @return string
+     * @param string $mime extension
+     * @return object
      */
-    public static function getMime($ext)
+    public static function from($mime)
     {
-        return isset(static::$list[$ext]) ? static::$list[$ext][0] : null;
+        return new Mime($mime);
     }
 }
