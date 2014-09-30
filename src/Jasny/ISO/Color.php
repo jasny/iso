@@ -1,15 +1,91 @@
 <?php
 
 namespace Jasny\ISO;
-include_once('Data/ColorsData.php');
-use Jasny\ISO\Data\ColorsData;
-
-class Color extends ColorsData
+include_once('Data/Colors.php');
+class Color
 {
     function __construct($color, $type = false)
     {
-        $this->color = (static::isHex($color) || static::isName($color) || static::isRgb($color)) ? $color : null;
-        $this->type = ($type === 'hex' || $type === 'name' || $type === 'rgb') ? $type : null;
+        $this->type = $type;
+
+        if (static::isValid($color)) {
+            if ($this->type === "hex") {
+                $this->color = Colors::getHex($color);
+            } elseif ($this->type === "rgb") {
+                $this->color = Colors::getRgb($color);
+            } elseif ($this->type === "name") {
+                $this->color = Colors::getName($color);
+            } else {
+                $this->color = $color;
+            }
+        } else {
+            throw new \Exception('Wrong argument!');
+        }
+    }
+
+    /**
+     * Get list of colors
+     *
+     * @return array
+     */
+    public static function getList()
+    {
+        return Colors::getList();
+    }
+
+    /**
+     * Create new object from color hex
+     *
+     * @param array $color Color hex
+     * @return object
+     */
+    final public static function fromHex($color)
+    {
+        return new Color($color, "hex");
+    }
+
+    /**
+     * Create new object from color rgb
+     *
+     * @param array $color Color rgb
+     * @return object
+     */
+    final public static function fromRGB($color)
+    {
+        return new Color($color, "rgb");
+    }
+
+    /**
+     * Create new object from color name
+     *
+     * @param array $color Color name
+     * @return object
+     */
+    final public static function fromName($color)
+    {
+        return new Color($color, "name");
+    }
+
+    /**
+     * Create new object from color hex, rgb or name
+     *
+     * @param string|array $color Color hex, rgb or name
+     * @return object
+     */
+    final public static function from($color)
+    {
+        return new Color($color);
+    }
+
+    /**
+     * Check if $color is valid (rgb, name or hex)
+     *
+     * @param string|array $color
+     * @return boolean
+     */
+    protected static function isValid($color)
+    {
+        return static::isHex($color) || static::isName($color) || static::isRgb($color);
     }
 
     /**
@@ -20,7 +96,7 @@ class Color extends ColorsData
      */
     protected static function isHex($color)
     {
-        return (is_string($color) && $color[0] === '#' && (strlen($color) === 4 || strlen($color) === 7)) ? $color : null;
+        return (is_string($color) && preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',$color)) ? : null;
     }
 
     /**
@@ -31,7 +107,7 @@ class Color extends ColorsData
      */
     protected static function isName($color)
     {
-        return (is_string($color) && isset(static::$names[$color])) ? $color : null;
+        return (is_string($color) && isset(Color::getList()[$color])) ? : null;
     }
 
     /**
@@ -42,61 +118,7 @@ class Color extends ColorsData
      */
     protected static function isRgb($color)
     {
-        return (is_array($color) && count($color) === 3) ? $color : null;
-    }
-
-    /**
-     * Create new object from color name
-     *
-     * @param string $color Color name
-     * @return object
-     */
-    public static function fromName($color)
-    {
-        if (!is_string($color)) return new Color(null);
-        $color = (string)strtolower($color);
-        return isset(static::$names[$color]) ? new Color($color, "name") : new Color(null);
-    }
-
-    /**
-     * Create new object from color rgb
-     *
-     * @param array $color Color rgb
-     * @return object
-     */
-    public static function fromRGB($color)
-    {
-        return (is_array($color) && count($color) === 3) ? new Color($color, "rgb") : new Color(null);
-    }
-
-    /**
-     * Create new object from color hex
-     *
-     * @param string $color Color hex
-     * @return object
-     */
-    public static function fromHex($color)
-    {
-        if (!is_string($color)) return new Color(null);
-        $color = (string)strtolower($color);
-        return ($color[0] === '#' && (strlen($color) === 4 || strlen($color) === 7)) ? new Color($color, "hex") : new Color(null);
-    }
-
-    /**
-     * Create new object from color hex, rgb or name
-     *
-     * @param string|array $color Color hex, rgb or name
-     * @return object
-     */
-    public static function from($color)
-    {
-        if (is_array($color) && count($color) === 3) {
-            return static::fromRGB($color);
-        } elseif ($color[0] === '#') {
-            return static::fromHex($color);
-        } else {
-            return static::fromName($color);
-        }
+        return (is_array($color) && count($color) === 3) ? : null;
     }
 
     /**
@@ -106,7 +128,7 @@ class Color extends ColorsData
      */
     public function toHex()
     {
-        return static::getHex($this->color);
+        return Colors::getHex($this->color);
     }
 
     /**
@@ -116,7 +138,7 @@ class Color extends ColorsData
      */
     public function toRGB()
     {
-        return static::getRgb($this->color);
+        return Colors::getRgb($this->color);
     }
 
     /**
@@ -126,7 +148,7 @@ class Color extends ColorsData
      */
     public function toName()
     {
-        return static::getName($this->color);
+        return Colors::getName($this->color);
     }
 
 
