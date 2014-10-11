@@ -9,12 +9,12 @@ class Color
         $this->type = $type;
 
         if (static::isValid($color)) {
-            if ($this->type === "hex") {
-                $this->color = Colors::getHex($color);
-            } elseif ($this->type === "rgb") {
-                $this->color = Colors::getRgb($color);
-            } elseif ($this->type === "name") {
-                $this->color = Colors::getName($color);
+            if (strtolower($this->type) === "hex") {
+                $this->color = Data\Colors::getHex($color);
+            } elseif (strtolower($this->type) === "rgb") {
+                $this->color = Data\Colors::getRgb($color);
+            } elseif (strtolower($this->type) === "name") {
+                $this->color = Data\Colors::getName($color);
             } else {
                 $this->color = $color;
             }
@@ -30,7 +30,7 @@ class Color
      */
     public static function getList()
     {
-        return Colors::getList();
+        return Data\Colors::getList();
     }
 
     /**
@@ -128,7 +128,7 @@ class Color
      */
     public function toHex()
     {
-        return Colors::getHex($this->color);
+        return Data\Colors::getHex($this->color);
     }
 
     /**
@@ -138,7 +138,7 @@ class Color
      */
     public function toRGB()
     {
-        return Colors::getRgb($this->color);
+        return Data\Colors::getRgb($this->color);
     }
 
     /**
@@ -148,7 +148,7 @@ class Color
      */
     public function toName()
     {
-        return Colors::getName($this->color);
+        return Data\Colors::getName($this->color);
     }
 
 

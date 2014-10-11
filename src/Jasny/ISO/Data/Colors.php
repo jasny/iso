@@ -1,6 +1,6 @@
 <?php
 
-namespace Jasny\ISO;
+namespace Jasny\ISO\Data;
 class Colors
 {
     /**
