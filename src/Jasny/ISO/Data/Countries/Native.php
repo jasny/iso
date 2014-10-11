@@ -451,6 +451,17 @@ class Native
         return array_search(static::countryCode($country), static::$list) ? : null;
     }
 
+    /**
+     * Get country code by name
+     *
+     * @param string $code
+     * @return string
+     */
+    public static function getCode($code)
+    {
+        return isset(static::$list[$code]) ? static::$list[$code] : null;
+    }
+
 }
 
 
