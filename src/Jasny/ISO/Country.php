@@ -10,7 +10,8 @@
 /** */
 namespace Jasny\ISO;
 include_once("Data/Countries/En.php");
-use Jasny\ISO\Data\Countries\En;
+include_once("Data/Countries/Native.php");
+
 
 /**
  * ISO 3166-1
@@ -19,26 +20,68 @@ use Jasny\ISO\Data\Countries\En;
  *  to establish internationally recognised codes for the representation of names of countries, territories or areas of
  *  geographical interest, and their subdivisions.
  */
-class Country extends En
+class Country
 {
-    function __construct($country, $param = false)
+    function __construct($country, $param = null, $language = null)
     {
         $this->country = (string)$country;
         $this->param = $param;
-        if ($param == "code") $this->country = (strlen($country) == 2) ? $country : null;
-        if ($param == "name") $this->country = isset(static::$list[$country]) ? $country : null;
+        $this->language = $language;
+        if (strtolower($this->param) === "name") {
+            $this->country = (strtolower($this->language) === "native") ? Data\Countries\Native::getName(static::countryCode($country)) : Data\Countries\En::getName(static::countryCode($country));
+        }
+        if (strtolower($this->param) === 'code') {
+            $this->country = static::countryCode($country, $language);
+        }
+    }
+
+    /**
+     * Get country code
+     *
+     * @param string $country
+     * @param string $language
+     * @throws \Exception
+     * @return string
+     */
+    protected function countryCode($country, $language = null)
+    {
+        $country = (string)$country;
+        if (isset(Data\Countries\En::getList()[$country]) || isset(Data\Countries\Native::getList()[$country])) return $country;
+        if (strtolower($language) === "native") return Data\Countries\Native::getCode($country);
+        if (strtolower($language) === "en") return Data\Countries\En::getCode($country);
+        if ($language === null) {
+            return (Data\Countries\En::getCode($country)) ? : Data\Countries\Native::getCode($country);
+        } else throw new \Exception("There is a mistake in '$language', language parameter can be only En or Native");
+
+    }
+
+    /**
+     * List of countries names
+     *
+     * @param string $language
+     * @throws \Exception
+     * @return
+     */
+    public static function getList($language = "en")
+    {
+        if (strtolower($language) === "en" || strtolower($language) === "native") {
+            $namespace = __NAMESPACE__ . "\\Data\\Countries\\" . $language;
+            return $namespace::getList();
+        } else throw new \Exception("Method 'getList()' can take only two parameters - En or Native!");
+
     }
 
     /**
      * Create new object from country name
      *
      * @param string $country Country name
+     * @param string $language
      * @return object
      */
-    public static function fromName($country)
+    public static function fromName($country, $language = null)
     {
         $country = (string)$country;
-        return isset(static::$list[$country]) ? new Country($country, "name") : new Country(null);
+        return new Country($country, "name", $language);
     }
 
     /**
@@ -50,40 +93,52 @@ class Country extends En
     public static function fromCode($country)
     {
         $country = (string)$country;
-        return (strlen($country) == 2) ? new Country($country, "code") : new Country(null);
+        return new Country($country, "code");
     }
 
     /**
-     * Checking what input is
+     * Create new object from country code or name
      *
      * @param string $country Country code or name
+     * @param string $language
      * @return static function
      */
-    public static function from($country)
+    public static function from($country, $language = null)
     {
         $country = (string)$country;
-        return (strlen($country) != 2) ? static::fromName($country) : static::fromCode($country);
+        return new Country($country, null, $language);
     }
 
     /**
      * Get country code
      *
+     * @throws \Exception
      * @return string
      */
     public function toCode()
     {
-        if (strlen($this->country) != 2) $this->country = static::getCode($this->country);
-        return $this->country;
+        if (strtolower($this->language) === "native") return Data\Countries\Native::getCode($this->country);
+        if (strtolower($this->language) === "en") return Data\Countries\En::getCode($this->country);
+        if ($this->language === null) {
+            return (Data\Countries\En::getCode($this->country)) ? : Data\Countries\Native::getCode($this->country);
+        } else throw new \Exception("There is a mistake in '$this->language', language parameter can be only En or Native");
+
     }
 
     /**
      * Get country name
      *
+     * @param $language
+     * @throws \Exception
      * @return string
      */
-    public function  toName()
+    public function  toName($language = 'en')
     {
-        return array_search(static::countryCode($this->country), static::$list) ? : null;
+        if (strtolower($language) === "en" || strtolower($language) === "native") {
+            $namespace = __NAMESPACE__ . "\\Data\\Countries\\" . $language;
+            return $namespace::getName(static::countryCode($this->country));
+        } else throw new \Exception("There is a mistake in '$language', language parameter can be only En or Native");
+
     }
 
 }
