@@ -46,7 +46,7 @@ class Country
     protected function countryCode($country, $language = null)
     {
         $country = (string)$country;
-        if (isset(Data\Countries\En::getList()[$country]) || isset(Data\Countries\Native::getList()[$country])) return $country;
+        if (isset(Data\Countries\En::getList()[$country])) return $country;
         if (strtolower($language) === "native") return Data\Countries\Native::getCode($country);
         if (strtolower($language) === "en") return Data\Countries\En::getCode($country);
         if ($language === null) {
