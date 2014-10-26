@@ -9,7 +9,12 @@
  */
 
 
-namespace Jasny\ISO\Data\Countries;
+namespace Jasny\DB\Data;
+use Jasny\ISO\Data\Countries as Countries;
+include_once($_SERVER['DOCUMENT_ROOT']."/ISO/Data/Countries/En.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/ISO/Data/Countries/Native.php");
+
+
 
 class Currencies
 {
@@ -851,9 +856,9 @@ class Currencies
     protected static function countryCode($country)
     {
         $country = (string)$country;
-        if (strlen($country) != 2) $country = En::getCode($country);
+        if (isset(Countries\En::getList()[$country])) return $country;
+        return (Countries\En::getCode($country)) ? : Countries\Native::getCode($country);
 
-        return $country;
     }
 
     /**
@@ -940,16 +945,18 @@ class Currencies
     }
     /**
      * Get countries where currency is used
+     * returns codes if $codes is true, else returns names
      *
      * @param string $currency
+     * @param boolean $codes
      * @return string
      */
-    public static function getCountry($currency)
+    public static function getCountry($currency, $codes = false)
     {
         if (isset(static::$countries[static::getCode($currency)])) {
             $result = [];
             foreach (static::$countries[static::getCode($currency)] as $countryCode) {
-                array_push($result, En::getName($countryCode));
+                ($codes === true) ? array_push($result, $countryCode) :array_push($result, Countries\En::getName($countryCode));
             }
             return implode(", ", $result);
         } else {
@@ -975,3 +982,4 @@ class Currencies
         }
     }
 }
+
