@@ -60,7 +60,7 @@ class Country
      *
      * @param string $language
      * @throws \Exception
-     * @return
+     * @return array
      */
     public static function getList($language = "en")
     {
@@ -101,7 +101,7 @@ class Country
      *
      * @param string $country Country code or name
      * @param string $language
-     * @return static function
+     * @return object
      */
     public static function from($country, $language = null)
     {
