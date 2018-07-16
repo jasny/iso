@@ -1,6 +1,8 @@
 ISO
 ===
 
+### This package is abandoned and no longer maintained. Use [umpirsky/country-list](https://github.com/umpirsky/country-list) instead.
+
 PHP library around standarized codes
 
 
